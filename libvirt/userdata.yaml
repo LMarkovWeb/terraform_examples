@@ -1,0 +1,23 @@
+#cloud-config
+fqdn: example.test
+manage_etc_hosts: true
+users:
+  - name: user
+    lock_passwd: false
+    passwd:
+    groups: sudo
+    shell: /bin/bash
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+disk_setup:
+  /dev/sdb:
+    table_type: mbr
+    layout:
+      - [100, 83]
+    overwrite: false
+fs_setup:
+  - label: data
+    device: /dev/sdb1
+    filesystem: ext4
+    overwrite: false
+mounts:
+  - [/dev/sdb1, /data, ext4, "defaults,discard,nofail", "0", "2"]
